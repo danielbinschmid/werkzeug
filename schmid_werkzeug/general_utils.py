@@ -1,6 +1,7 @@
 import json
 from typing import Dict, List
 import numpy as np
+import os
 
 
 def print_info(*args):
@@ -31,3 +32,9 @@ def npdict_to_json(data: Dict[str, List[Dict[str, np.ndarray]]], fpath: str) -> 
     # Save to a JSON file
     with open(fpath, "w") as f:
         json.dump(json_data, f)
+
+
+def append_suffix_to_filepath(fpath: str, suffix: str):
+    base, ext = os.path.splitext(fpath)
+    new_filepath = f"{base}{suffix}{ext}"
+    return new_filepath
