@@ -13,4 +13,7 @@ setup(
     description="",
     license="",
     keywords="",
+    entry_points={
+        "console_scripts": ["werkzeug = schmid_werkzeug.main:main",],  # CLI entry point
+    },
 )
