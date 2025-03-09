@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 import json
 import yaml
-
+import glob
+import os
+from .general_utils import print_info
 
 def save_cfg(cfg: BaseModel, yaml_path: str) -> None:
     assert yaml_path.endswith(".yaml")
@@ -17,3 +19,15 @@ def load_cfg(yaml_path: str, CfgClass: type[BaseModel] = BaseModel) -> BaseModel
         data = yaml.safe_load(file)
     config = CfgClass.model_validate(data)
     return config
+
+
+def gather_yaml_files(directory, recursive=True, verbose=True):
+    pattern = '**/*.yaml' if recursive else '*.yaml'
+    yaml_files = glob.glob(os.path.join(directory, pattern), recursive=recursive)
+
+    if verbose:
+        print_info(f"Found {len(yaml_files)} YAML files:")
+        for file in yaml_files:
+            print(file)
+
+    return yaml_files
