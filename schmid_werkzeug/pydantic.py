@@ -5,6 +5,7 @@ import glob
 import os
 from .general_utils import print_info
 
+
 def save_cfg(cfg: BaseModel, yaml_path: str) -> None:
     assert yaml_path.endswith(".yaml")
     json_string = cfg.model_dump_json()
@@ -21,8 +22,8 @@ def load_cfg(yaml_path: str, CfgClass: type[BaseModel] = BaseModel) -> BaseModel
     return config
 
 
-def gather_yaml_files(directory, recursive=True, verbose=True):
-    pattern = '**/*.yaml' if recursive else '*.yaml'
+def gather_yaml_files(directory, recursive=True, verbose=True, suffix: str = ".yaml"):
+    pattern = f"**/*{suffix}" if recursive else f"*{suffix}"
     yaml_files = glob.glob(os.path.join(directory, pattern), recursive=recursive)
 
     if verbose:
