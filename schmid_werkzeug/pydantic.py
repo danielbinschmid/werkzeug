@@ -17,7 +17,12 @@ def save_cfg(cfg: BaseModel, yaml_path: str) -> None:
 
 def load_cfg(yaml_path: str, CfgClass: type[BaseModel] = BaseModel) -> BaseModel:
     with open(yaml_path, "r") as file:
-        data = yaml.safe_load(file)
+        if yaml_path.endswith(".yaml"):
+            data = yaml.safe_load(file)
+        elif yaml_path.endswith(".json"):
+            data = json.load(file)
+        else:
+            raise ValueError("")
     config = CfgClass.model_validate(data)
     return config
 
