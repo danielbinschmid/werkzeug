@@ -125,3 +125,53 @@ def drop_col(df: pd.DataFrame, col: str):
     """
     df = df.drop(col, axis=1)
     return df
+
+def filter_by_value(df: pd.DataFrame, col: str, value) -> pd.DataFrame:
+    """
+    Filters the DataFrame by a specific value in a column
+
+    @col: column to filter on
+    @value: value to match
+    """
+    filtered_df = df[df[col] == value].copy()
+    return filtered_df
+
+def set_keys_and_drop_duplicates(df: pd.DataFrame, key_cols: List[str]) -> pd.DataFrame:
+    """
+    Sets key columns and drops duplicates based on them
+
+    @key_cols: list of columns to be treated as unique keys
+    """
+    deduped_df = df.drop_duplicates(subset=key_cols).reset_index(drop=True)
+    return deduped_df
+
+def merge_on_keys(
+    df1: pd.DataFrame, df2: pd.DataFrame, key_cols: List[str], how: str = "inner"
+) -> pd.DataFrame:
+    """
+    Merges two DataFrames on key columns
+
+    @key_cols: columns to merge on
+    @how: type of join - 'inner', 'outer', 'left', 'right' (default = 'inner')
+    """
+    merged_df = pd.merge(df1, df2, on=key_cols, how=how)
+    return merged_df
+
+def bring_keys_to_front(df: pd.DataFrame, key_cols: List[str]) -> pd.DataFrame:
+    """
+    Reorders the DataFrame to place key columns at the front
+
+    @key_cols: list of columns to move to the front
+    """
+    remaining_cols = [col for col in df.columns if col not in key_cols]
+    ordered_df = df[key_cols + remaining_cols]
+    return ordered_df
+
+def rename_col(df: pd.DataFrame, col_mapping: Dict[str, str]) -> pd.DataFrame:
+    """
+    Renames column(s) using a mapping
+
+    @col_mapping: dictionary of {old_name: new_name}
+    """
+    renamed_df = df.rename(columns=col_mapping)
+    return renamed_df
